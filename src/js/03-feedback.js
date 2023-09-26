@@ -10,11 +10,13 @@ let formData = {
 };
   
 function saveData(e) {
-    formData = {
-        email: input.value,
-        message: textarea.value,
-    };
-    localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    if (input.value && textarea.value) {
+         formData = {
+            email: input.value,
+            message: textarea.value,
+         };
+        localStorage.setItem('feedback-form-state', JSON.stringify(formData));
+    }
 }
 
 function fillForm() {
@@ -33,9 +35,15 @@ form.addEventListener('input', throttle(saveData, 500));
 
 function submitData(event) {
     event.preventDefault();
+
+    if (!input.value || !textarea.value) {
+        alert('Please fill in all fields of the form');
+        return;
+    }
     localStorage.removeItem('feedback-form-state');
     input.value = ''; 
     textarea.value = '';
 
     console.log(formData);
 }
+
